@@ -1,12 +1,9 @@
 package me.pietrzak.lanterna
-
 import com.googlecode.lanterna.TextColor
-import com.googlecode.lanterna.graphics.TextGraphics
 import com.googlecode.lanterna.input.KeyStroke
 import com.googlecode.lanterna.input.KeyType
 import com.googlecode.lanterna.screen.Screen
 import com.googlecode.lanterna.screen.ScreenTextGraphics
-import com.googlecode.lanterna.screen.TerminalScreen
 import com.googlecode.lanterna.terminal.Terminal
 import groovy.util.logging.Slf4j
 
@@ -21,13 +18,11 @@ class SimpleScroll {
     public static final WINDOW_SIZE = 30
 
     public void scroll(Terminal terminal, Screen screen, ScreenTextGraphics writer) {
-        displayMessageInRightBottomCorner(writer, screen, "Press ESC")
-
         for (int i = 0; i < SCROLL[0].length() + 2; i++) {
             for (int j = 0; j < 5; j++) {
                 String currentText = (SCROLL[j] + SCROLL[j]).substring(i, i + WINDOW_SIZE)
                 writer.setForegroundColor(TextColor.Indexed.fromRGB(255, j * 30, 0))
-                writer.putString(0, 5 + j, currentText)
+                writer.putString((int) Math.floor(screen.terminalSize.columns/2)-15, (int) Math.floor(screen.terminalSize.rows/2)-3 + j, currentText)
             }
             if (i > SCROLL[0].length()) {
                 i = 1
@@ -41,7 +36,5 @@ class SimpleScroll {
         }
     }
 
-    private TextGraphics displayMessageInRightBottomCorner(ScreenTextGraphics writer, TerminalScreen screen, String message) {
-        writer.putString(screen.terminalSize.getColumns() - message.length(), screen.terminalSize.getRows() - 1, message)
-    }
+
 }

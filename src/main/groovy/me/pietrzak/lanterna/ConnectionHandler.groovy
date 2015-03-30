@@ -1,5 +1,6 @@
 package me.pietrzak.lanterna
 
+import com.googlecode.lanterna.TextColor
 import com.googlecode.lanterna.graphics.TextGraphics
 import com.googlecode.lanterna.screen.Screen
 import com.googlecode.lanterna.screen.ScreenTextGraphics
@@ -15,7 +16,11 @@ class ConnectionHandler {
                     Screen screen = new TerminalScreen(terminal)
                     screen.startScreen()
                     TextGraphics writer = new ScreenTextGraphics(screen);
+                    new AtariFontScroll().scroll(terminal, screen, writer);
                     new SimpleScroll().scroll(terminal, screen, writer);
+                    screen.stopScreen()
+                    terminal.clearScreen()
+                    terminal.exitPrivateMode()
                 }
                 catch (IOException e) {
                     closure "Error during handle connection", e
